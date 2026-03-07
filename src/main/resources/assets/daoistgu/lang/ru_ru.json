@@ -1,4 +1,6 @@
 {
   "item.daoistgu.bismuth": "Бисмут",
-  "item.daoistgu.primordial_stone": "Первородный камень"
+  "item.daoistgu.primordial_stone": "Первородный камень",
+
+  "block.daoistgu.bismuth_block": "Блок Бисмута"
 }
