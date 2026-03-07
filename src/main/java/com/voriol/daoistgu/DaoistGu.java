@@ -52,7 +52,7 @@ public class DaoistGu {
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if(event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
             event.accept(ModItems.BISMUTH);
-            event.accept(ModItems.PRIMORDIAL_STONE)
+            event.accept(ModItems.PRIMORDIAL_STONE);
         }
     }
 
