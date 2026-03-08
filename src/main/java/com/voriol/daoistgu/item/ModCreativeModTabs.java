@@ -23,8 +23,11 @@ public class ModCreativeModTabs {
                     .displayItems((itemDisplayParameters, output) -> {
 
                         output.accept(ModItems.BISMUTH);
+                        output.accept(ModItems.JADE);
                         output.accept(ModItems.RAW_BISMUTH);
                         output.accept(ModItems.CHISEL);
+                        output.accept(ModItems.BASE_COIN);
+                        output.accept(ModItems.JADE_COIN);
 
                     }).build());
 
@@ -37,6 +40,9 @@ public class ModCreativeModTabs {
                         output.accept(ModBlocks.BISMUTH_BLOCK);
                         output.accept(ModBlocks.BISMUTH_ORE);
                         output.accept(ModBlocks.BISMUTH_DEEPSLATE_ORE);
+                        output.accept(ModBlocks.JADE_BLOCK);
+                        output.accept(ModBlocks.JADE_ORE);
+                        output.accept(ModBlocks.JADE_DEEPSLATE_ORE);
                         output.accept(ModBlocks.MAGIC_BLOCK);
 
                     }).build());

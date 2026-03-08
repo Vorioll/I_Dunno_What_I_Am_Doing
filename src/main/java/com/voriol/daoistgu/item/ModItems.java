@@ -17,7 +17,13 @@ public class ModItems {
             () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> RAW_BISMUTH = ITEMS.register("raw_bismuth",
             () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> JADE = ITEMS.register("jade",
+            () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> PRIMORDIAL_STONE = ITEMS.register("primordial_stone",
+            () -> new Primal_Stone(new Item.Properties()));
+    public static final DeferredItem<Item> BASE_COIN = ITEMS.register("base_coin",
+            () -> new Primal_Stone(new Item.Properties()));
+    public static final DeferredItem<Item> JADE_COIN = ITEMS.register("jade_coin",
             () -> new Primal_Stone(new Item.Properties()));
 
 
