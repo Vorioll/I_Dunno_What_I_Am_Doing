@@ -1,6 +1,11 @@
 {
   "item.daoistgu.bismuth": "Bismuth",
+  "item.daoistgu.raw_bismuth": "Raw bismuth",
   "item.daoistgu.primordial_stone": "Primordial Stone",
 
-  "block.daoistgu.bismuth_block": "Block of Bismuth"
+  "block.daoistgu.bismuth_block": "Block of bismuth",
+  "block.daoistgu.bismuth_ore": "Ore of bismuth",
+
+  "creativetab.daoistgu.bismuth_items": "Bismuth items",
+  "creativetab.daoistgu.bismuth_blocks": "Bismuth blocks"
 }

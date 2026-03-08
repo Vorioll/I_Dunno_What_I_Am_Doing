@@ -1,6 +1,11 @@
 {
   "item.daoistgu.bismuth": "Бисмут",
+  "item.daoistgu.raw_bismuth": "Необработанный бисмут",
   "item.daoistgu.primordial_stone": "Первородный камень",
 
-  "block.daoistgu.bismuth_block": "Блок Бисмута"
+  "block.daoistgu.bismuth_block": "Блок бисмута",
+  "block.daoistgu.bismuth_ore": "Руда бисмута",
+
+  "creativetab.daoistgu.bismuth_items": "Предметы из бисмута",
+  "creativetab.daoistgu.bismuth_blocks": "Блоки бисмута"
 }

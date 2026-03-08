@@ -1,6 +1,7 @@
 package com.voriol.daoistgu;
 
 import com.voriol.daoistgu.block.ModBlocks;
+import com.voriol.daoistgu.item.ModCreativeModTabs;
 import com.voriol.daoistgu.item.ModItems;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -37,6 +38,7 @@ public class DaoistGu {
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
 
+        ModCreativeModTabs.register(modEventBus);
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
 
@@ -55,9 +57,11 @@ public class DaoistGu {
         if(event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
             event.accept(ModItems.BISMUTH);
             event.accept(ModItems.PRIMORDIAL_STONE);
+            event.accept(ModItems.RAW_BISMUTH);
         }
         if(event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS){
             event.accept(ModBlocks.BISMUTH_BLOCK);
+            event.accept(ModBlocks.BISMUTH_ORE);
         }
     }
 
