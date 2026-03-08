@@ -1,6 +1,7 @@
 package com.voriol.daoistgu.block;
 
 import com.voriol.daoistgu.DaoistGu;
+import com.voriol.daoistgu.block.custom.JadeBlock;
 import com.voriol.daoistgu.block.custom.MagicBlock;
 import com.voriol.daoistgu.item.ModItems;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -32,7 +33,7 @@ public class ModBlocks {
             () -> new DropExperienceBlock(UniformInt.of(3, 6),
                     BlockBehaviour.Properties.of().strength(4f).requiresCorrectToolForDrops().sound(SoundType.DEEPSLATE)));
     public static final DeferredBlock<Block> JADE_BLOCK = registerBlock("jade_block",
-            () -> new Block(BlockBehaviour.Properties.of()
+            () -> new JadeBlock(BlockBehaviour.Properties.of()
                     .strength(4f).requiresCorrectToolForDrops().sound(SoundType.AMETHYST)));
     public static final DeferredBlock<Block> JADE_ORE = registerBlock("jade_ore",
             () -> new DropExperienceBlock(UniformInt.of(2, 4),

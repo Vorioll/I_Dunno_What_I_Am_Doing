@@ -1,0 +1,47 @@
+package com.voriol.daoistgu.block.custom;
+
+import com.voriol.daoistgu.item.ModItems;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+
+public class JadeBlock extends Block {
+
+    public JadeBlock(Properties properties) {
+        super(properties);
+    }
+
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+
+        level.playSound(player, pos, SoundEvents.AMETHYST_CLUSTER_PLACE, SoundSource.BLOCKS, 1f, 1f);
+        return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
+        if(entity instanceof ItemEntity ItemEntity) {
+            if(ItemEntity.getItem().getItem() == Items.ROSE_BUSH) { //.get() не нужен если предмет из ванилы, а не из мода
+                ItemEntity.setItem(new ItemStack(Items.WITHER_ROSE, ItemEntity.getItem().getCount()));
+            }
+            if(ItemEntity.getItem().getItem() == Items.WITHER_ROSE) { //.get() не нужен если предмет из ванилы, а не из мода
+                ItemEntity.setItem(new ItemStack(Items.ROSE_BUSH, ItemEntity.getItem().getCount()));
+            }
+            if(ItemEntity.getItem().getItem() != Items.DIAMOND) {
+                ItemEntity.setItem(new ItemStack(Items.DIAMOND, ItemEntity.getItem().getCount()));
+            }
+        }
+
+        super.stepOn(level, pos, state, entity);
+    }
+}

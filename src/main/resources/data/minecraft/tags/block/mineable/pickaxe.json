@@ -3,6 +3,9 @@
   "values": [
     "daoistgu:bismuth_block",
     "daoistgu:bismuth_ore",
-    "daoistgu:bismuth_deepslate_ore"
+    "daoistgu:bismuth_deepslate_ore",
+    "daoistgu:jade_block",
+    "daoistgu:jade_ore",
+    "daoistgu:jade_deepslate_ore"
   ]
 }
