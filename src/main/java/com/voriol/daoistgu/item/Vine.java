@@ -10,10 +10,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class Vine extends Item {
+public class Vine extends DaoIngredients {
     private int power = 0;
-    public Vine(Properties properties, int power) {
-        super(properties);
+    public Vine(Properties properties, int power, int rank, String type) {
+        super(properties, rank, type); // передаём все нужные параметры
         this.power = power;
     }
     @Override

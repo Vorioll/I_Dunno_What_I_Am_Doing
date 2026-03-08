@@ -10,5 +10,16 @@
   "block.daoistgu.bismuth_ore": "Ore of bismuth",
 
   "creativetab.daoistgu.bismuth_items": "Bismuth items",
-  "creativetab.daoistgu.bismuth_blocks": "Bismuth blocks"
+  "creativetab.daoistgu.bismuth_blocks": "Bismuth blocks",
+
+  "tooltip.daoistgu.rank": "Rank: %s",
+  "tooltip.daoistgu.type": "Type: %s",
+  "tooltip.daoistgu.type.plant": "Plant",
+  "tooltip.daoistgu.type.ore": "Ore",
+  "tooltip.daoistgu.type.meat": "Meat",
+  "tooltip.daoistgu.type.heaven": "Heaven",
+  "tooltip.daoistgu.type.hell": "Hell",
+  "tooltip.daoistgu.type.alcohol": "Alcohol",
+  "tooltip.daoistgu.type.unknown": "Unknown"
+
 }
