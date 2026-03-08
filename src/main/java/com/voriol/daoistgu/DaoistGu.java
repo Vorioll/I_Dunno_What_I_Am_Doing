@@ -63,6 +63,7 @@ public class DaoistGu {
             event.accept(ModBlocks.BISMUTH_BLOCK);
             event.accept(ModBlocks.BISMUTH_ORE);
             event.accept(ModBlocks.BISMUTH_DEEPSLATE_ORE);
+            event.accept(ModBlocks.MAGIC_BLOCK);
         }
     }
 
