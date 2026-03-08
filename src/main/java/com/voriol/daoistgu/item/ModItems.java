@@ -26,6 +26,11 @@ public class ModItems {
     public static final DeferredItem<Item> JADE_COIN = ITEMS.register("jade_coin",
             () -> new Primal_Stone(new Item.Properties()));
 
+    public static final DeferredItem<Item> VINE_255 = ITEMS.register("vine",
+            () -> new Vine(new Item.Properties(), 255, 5, "alcohol"));
+
+    public static final DeferredItem<Item> VINE_2 = ITEMS.register("vine2",
+            () -> new Vine(new Item.Properties(), 2, 2, "alcohol"));
 
 
     public static void register(IEventBus eventBus) {

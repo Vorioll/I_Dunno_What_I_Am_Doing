@@ -52,7 +52,6 @@ public class DaoistGu {
 
     }
 
-
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if(event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
@@ -62,6 +61,8 @@ public class DaoistGu {
             event.accept(ModItems.JADE);
             event.accept(ModItems.JADE_COIN);
             event.accept(ModItems.BASE_COIN);
+            event.accept(ModItems.VINE_255);
+            event.accept(ModItems.VINE_2);
         }
         if(event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS){
             event.accept(ModBlocks.BISMUTH_BLOCK);
