@@ -18,6 +18,11 @@ public class ModItems {
     public static final DeferredItem<Item> PRIMORDIAL_STONE = ITEMS.register("primordial_stone",
             () -> new Primal_Stone(new Item.Properties()));
 
+    public static final DeferredItem<Item> VINE_255 = ITEMS.register("vine",
+            () -> new Vine(new Item.Properties(), 255));
+
+    public static final DeferredItem<Item> VINE_2 = ITEMS.register("vine2",
+            () -> new Vine(new Item.Properties(), 2));
 
 
     public static void register(IEventBus eventBus) {

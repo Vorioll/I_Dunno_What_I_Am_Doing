@@ -3,7 +3,6 @@ package com.voriol.daoistgu;
 import com.voriol.daoistgu.block.ModBlocks;
 import com.voriol.daoistgu.item.ModCreativeModTabs;
 import com.voriol.daoistgu.item.ModItems;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import org.slf4j.Logger;
 
@@ -59,6 +58,8 @@ public class DaoistGu {
             event.accept(ModItems.BISMUTH);
             event.accept(ModItems.PRIMORDIAL_STONE);
             event.accept(ModItems.RAW_BISMUTH);
+            event.accept(ModItems.VINE_255);
+            event.accept(ModItems.VINE_2);
         }
         if(event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS){
             event.accept(ModBlocks.BISMUTH_BLOCK);
