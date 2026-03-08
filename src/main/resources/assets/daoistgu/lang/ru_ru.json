@@ -16,5 +16,16 @@
   "block.daoistgu.magic_block": "Магический блок",
 
   "creativetab.daoistgu.bismuth_items": "Предметы из бисмута",
-  "creativetab.daoistgu.bismuth_blocks": "Блоки бисмута"
+  "creativetab.daoistgu.bismuth_blocks": "Блоки бисмута",
+  "creativetab.daoistgu.dao_ingredients": "Ингредиенты Дао",
+
+  "tooltip.daoistgu.rank": "Ранг: %s",
+  "tooltip.daoistgu.type": "Тип: %s",
+  "tooltip.daoistgu.type.plant": "Растительный",
+  "tooltip.daoistgu.type.ore": "Рудный",
+  "tooltip.daoistgu.type.meat": "Мясной",
+  "tooltip.daoistgu.type.heaven": "Небесный",
+  "tooltip.daoistgu.type.hell": "Адский",
+  "tooltip.daoistgu.type.alcohol": "Алкоголь",
+  "tooltip.daoistgu.type.unknown": "Неизвестно"
 }

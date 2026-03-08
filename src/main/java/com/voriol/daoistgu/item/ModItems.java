@@ -22,9 +22,9 @@ public class ModItems {
     public static final DeferredItem<Item> PRIMORDIAL_STONE = ITEMS.register("primordial_stone",
             () -> new Primal_Stone(new Item.Properties()));
     public static final DeferredItem<Item> BASE_COIN = ITEMS.register("base_coin",
-            () -> new Primal_Stone(new Item.Properties()));
+            () -> new DaoIngredients(new Item.Properties(), 1, "ore"));
     public static final DeferredItem<Item> JADE_COIN = ITEMS.register("jade_coin",
-            () -> new Primal_Stone(new Item.Properties()));
+            () -> new DaoIngredients(new Item.Properties(), 2, "ore"));
 
     public static final DeferredItem<Item> VINE_255 = ITEMS.register("vine",
             () -> new Vine(new Item.Properties(), 255, 5, "alcohol"));

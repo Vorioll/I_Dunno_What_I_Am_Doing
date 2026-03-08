@@ -23,11 +23,8 @@ public class ModCreativeModTabs {
                     .displayItems((itemDisplayParameters, output) -> {
 
                         output.accept(ModItems.BISMUTH);
-                        output.accept(ModItems.JADE);
                         output.accept(ModItems.RAW_BISMUTH);
                         output.accept(ModItems.CHISEL);
-                        output.accept(ModItems.BASE_COIN);
-                        output.accept(ModItems.JADE_COIN);
 
                     }).build());
 
@@ -44,6 +41,20 @@ public class ModCreativeModTabs {
                         output.accept(ModBlocks.JADE_ORE);
                         output.accept(ModBlocks.JADE_DEEPSLATE_ORE);
                         output.accept(ModBlocks.MAGIC_BLOCK);
+
+                    }).build());
+
+    public static final Supplier<CreativeModeTab> DAO_INGREDIENTS_TAB = CREATIVE_MODE_TAB.register("dao_ingredients_tab",
+            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.PRIMORDIAL_STONE.get()))
+                    .withTabsBefore(ResourceLocation.fromNamespaceAndPath(DaoistGu.MOD_ID, "bismuth_blocks_tab"))
+                    .title(Component.translatable("creativetab.daoistgu.dao_ingredients"))
+                    .displayItems((itemDisplayParameters, output) -> {
+
+                        output.accept(ModItems.JADE_COIN);
+                        output.accept(ModItems.BASE_COIN);
+                        output.accept(ModItems.PRIMORDIAL_STONE);
+                        output.accept(ModItems.VINE_2);
+                        output.accept(ModItems.VINE_255);
 
                     }).build());
 
