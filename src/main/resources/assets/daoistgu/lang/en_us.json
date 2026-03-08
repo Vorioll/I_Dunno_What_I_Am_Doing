@@ -1,11 +1,35 @@
 {
   "item.daoistgu.bismuth": "Bismuth",
   "item.daoistgu.raw_bismuth": "Raw bismuth",
+  "item.daoistgu.jade": "Jade",
+  "item.daoistgu.jade_coin": "Jade coin",
+  "item.daoistgu.base_coin": "Base coin",
   "item.daoistgu.primordial_stone": "Primordial Stone",
+  "item.daoistgu.chisel": "Chisel",
+
+  "item.daoistgu.vine2": "Mortal Wine",
+  "item.daoistgu.vine": "Jade Wine",
 
   "block.daoistgu.bismuth_block": "Block of bismuth",
   "block.daoistgu.bismuth_ore": "Ore of bismuth",
+  "block.daoistgu.bismuth_deepslate_ore": "Deepslate ore of bismuth",
+  "block.daoistgu.jade_block": "Jade block",
+  "block.daoistgu.jade_ore": "Ore of jade",
+  "block.daoistgu.jade_deepslate_ore": "Deepslate ore of jade",
+  "block.daoistgu.magic_block": "Magic block",
 
   "creativetab.daoistgu.bismuth_items": "Bismuth items",
-  "creativetab.daoistgu.bismuth_blocks": "Bismuth blocks"
+  "creativetab.daoistgu.bismuth_blocks": "Bismuth blocks",
+  "creativetab.daoistgu.dao_ingredients": "Dao ingredients",
+
+  "tooltip.daoistgu.rank": "Rank: %s",
+  "tooltip.daoistgu.type": "Type: %s",
+  "tooltip.daoistgu.type.plant": "Plant",
+  "tooltip.daoistgu.type.ore": "Ore",
+  "tooltip.daoistgu.type.meat": "Meat",
+  "tooltip.daoistgu.type.heaven": "Heaven",
+  "tooltip.daoistgu.type.hell": "Hell",
+  "tooltip.daoistgu.type.alcohol": "Alcohol",
+  "tooltip.daoistgu.type.unknown": "Unknown"
+
 }

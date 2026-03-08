@@ -58,10 +58,20 @@ public class DaoistGu {
             event.accept(ModItems.BISMUTH);
             event.accept(ModItems.PRIMORDIAL_STONE);
             event.accept(ModItems.RAW_BISMUTH);
+            event.accept(ModItems.JADE);
+            event.accept(ModItems.JADE_COIN);
+            event.accept(ModItems.BASE_COIN);
+            event.accept(ModItems.VINE_255);
+            event.accept(ModItems.VINE_2);
         }
         if(event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS){
             event.accept(ModBlocks.BISMUTH_BLOCK);
             event.accept(ModBlocks.BISMUTH_ORE);
+            event.accept(ModBlocks.BISMUTH_DEEPSLATE_ORE);
+            event.accept(ModBlocks.JADE_BLOCK);
+            event.accept(ModBlocks.JADE_ORE);
+            event.accept(ModBlocks.JADE_DEEPSLATE_ORE);
+            event.accept(ModBlocks.MAGIC_BLOCK);
         }
     }
 
