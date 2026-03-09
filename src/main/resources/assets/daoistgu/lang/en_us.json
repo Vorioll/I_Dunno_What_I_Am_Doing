@@ -31,6 +31,7 @@
   "tooltip.daoistgu.type.heaven": "Heaven",
   "tooltip.daoistgu.type.hell": "Hell",
   "tooltip.daoistgu.type.alcohol": "Alcohol",
-  "tooltip.daoistgu.type.unknown": "Unknown"
+  "tooltip.daoistgu.type.unknown": "Unknown",
 
+  "entity.daoistgu.jade_monkey": "Jade monkey"
 }

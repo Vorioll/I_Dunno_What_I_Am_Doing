@@ -31,5 +31,7 @@
   "tooltip.daoistgu.type.heaven": "Небесный",
   "tooltip.daoistgu.type.hell": "Адский",
   "tooltip.daoistgu.type.alcohol": "Алкоголь",
-  "tooltip.daoistgu.type.unknown": "Неизвестно"
+  "tooltip.daoistgu.type.unknown": "Неизвестно",
+
+  "entity.daoistgu.jade_monkey": "Нефритовая обезьянка"
 }
