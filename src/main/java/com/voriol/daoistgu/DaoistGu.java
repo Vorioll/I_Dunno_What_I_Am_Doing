@@ -35,12 +35,12 @@ public class DaoistGu {
         ModCreativeModTabs.register(modEventBus);
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
-        ModEntities.ENTITIES.register(modEventBus); // <-- ДОБАВЛЕНО!
+        ModEntities.ENTITIES.register(modEventBus);
 
         // Добавляем слушатели событий
         modEventBus.addListener(this::addCreative);
         modEventBus.addListener(this::commonSetup);
-        modEventBus.addListener(this::registerAttributes); // <-- ДОБАВЛЕНО!
+        modEventBus.addListener(this::registerAttributes);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
