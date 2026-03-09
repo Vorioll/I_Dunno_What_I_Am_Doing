@@ -10,6 +10,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 public class JadeMonkeyModel<T extends JadeMonkeyEntity> extends EntityModel<T> {
     public static final ModelLayerLocation LAYER_LOCATION =
@@ -90,13 +91,13 @@ public class JadeMonkeyModel<T extends JadeMonkeyEntity> extends EntityModel<T> 
     }
 
     @Override
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.head.xRot = headPitch * ((float)Math.PI / 180F);
         this.head.yRot = netHeadYaw * ((float)Math.PI / 180F);
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
+    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
         arml.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
         armr.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
         head.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);

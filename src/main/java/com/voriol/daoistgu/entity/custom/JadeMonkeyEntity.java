@@ -12,6 +12,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class JadeMonkeyEntity extends PathfinderMob {
     private int invisibilityCooldown = 0;
@@ -41,7 +44,7 @@ public class JadeMonkeyEntity extends PathfinderMob {
         this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 0.8D));
 
         // Смотреть на игрока
-        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 25.0F));
+        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
 
         // Цель - атаковать игрока
@@ -77,9 +80,9 @@ public class JadeMonkeyEntity extends PathfinderMob {
                 // Но можно добавить усиление атаки, если невидима
                 if (this.hasEffect(MobEffects.INVISIBILITY)) {
                     // Если невидима - увеличиваем урон (опционально)
-                    this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(6.0D);
+                    Objects.requireNonNull(this.getAttribute(Attributes.ATTACK_DAMAGE)).setBaseValue(6.0D);
                 } else {
-                    this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+                    Objects.requireNonNull(this.getAttribute(Attributes.ATTACK_DAMAGE)).setBaseValue(4.0D);
                 }
             }
         }
@@ -109,7 +112,7 @@ public class JadeMonkeyEntity extends PathfinderMob {
     }
 
     @Override
-    public boolean hurt(net.minecraft.world.damagesource.DamageSource source, float amount) {
+    public boolean hurt(net.minecraft.world.damagesource.@NotNull DamageSource source, float amount) {
         // Когда обезьяну атакуют, она может стать невидимой (шанс 30%)
         if (!this.level().isClientSide && source.getEntity() instanceof Player) {
             if (this.random.nextFloat() < 0.3f && invisibilityCooldown <= 0) {

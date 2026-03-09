@@ -74,6 +74,9 @@ public class DaoistGu {
             event.accept(ModBlocks.JADE_DEEPSLATE_ORE);
             event.accept(ModBlocks.MAGIC_BLOCK);
         }
+        if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
+            event.accept(ModItems.JADE_MONKEY_SPAWN_EGG);
+        }
     }
 
     @SubscribeEvent
