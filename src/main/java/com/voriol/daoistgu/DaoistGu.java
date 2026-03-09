@@ -1,9 +1,9 @@
 package com.voriol.daoistgu;
 
 import com.voriol.daoistgu.block.ModBlocks;
+import com.voriol.daoistgu.entity.ModEntities;
 import com.voriol.daoistgu.item.ModCreativeModTabs;
 import com.voriol.daoistgu.item.ModItems;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import org.slf4j.Logger;
 
@@ -20,39 +20,40 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
-// The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(DaoistGu.MOD_ID)
 public class DaoistGu {
     public static final String MOD_ID = "daoistgu";
     public static final Logger LOGGER = LogUtils.getLogger();
-    // The constructor for the mod class is the first code that is run when your mod is loaded.
-    // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
-    public DaoistGu(IEventBus modEventBus, ModContainer modContainer) {
-        // Register the commonSetup method for modloading
-        modEventBus.addListener(this::commonSetup);
 
-        // Register ourselves for server and other game events we are interested in.
-        // Note that this is necessary if and only if we want *this* class (ExampleMod) to respond directly to events.
-        // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
+    public DaoistGu(IEventBus modEventBus, ModContainer modContainer) {
         NeoForge.EVENT_BUS.register(this);
 
+        // Регистрируем все DeferredRegister
         ModCreativeModTabs.register(modEventBus);
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
+        ModEntities.ENTITIES.register(modEventBus);
 
-        // Register the item to a creative tab
+        // Добавляем слушатели событий
         modEventBus.addListener(this::addCreative);
-        // Register our mod's ModConfigSpec so that FML can create and load the config file for us
+        modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::registerAttributes);
+
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
-
+        // Общая инициализация
     }
 
-    // Add the example block item to the building blocks tab
+    // Регистрация атрибутов сущностей
+    private void registerAttributes(EntityAttributeCreationEvent event) {
+        ModEntities.registerAttributes(event);
+    }
+
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if(event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
             event.accept(ModItems.BISMUTH);
@@ -73,20 +74,21 @@ public class DaoistGu {
             event.accept(ModBlocks.JADE_DEEPSLATE_ORE);
             event.accept(ModBlocks.MAGIC_BLOCK);
         }
+        if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
+            event.accept(ModItems.JADE_MONKEY_SPAWN_EGG);
+        }
     }
 
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
-
+        LOGGER.info("Server starting!");
     }
 
-    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
     @EventBusSubscriber(modid = DaoistGu.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     static class ClientModEvents {
         @SubscribeEvent
         static void onClientSetup(FMLClientSetupEvent event) {
-
+            // Клиентская инициализация
         }
     }
 }
