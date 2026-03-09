@@ -5,6 +5,10 @@ import com.voriol.daoistgu.block.ModBlocks;
 import com.voriol.daoistgu.entity.ModEntities;
 import com.voriol.daoistgu.item.ModCreativeModTabs;
 import com.voriol.daoistgu.item.ModItems;
+import com.voriol.daoistgu.playerdata.ModAttachments;
+import com.voriol.daoistgu.playerdata.PlayerGenes;
+import com.voriol.daoistgu.playerdata.SyncGenesPayload;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.CreativeModeTabs;
 import org.slf4j.Logger;
 
@@ -22,6 +26,7 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
 @Mod(DaoistGu.MOD_ID)
@@ -32,6 +37,9 @@ public class DaoistGu {
     public DaoistGu(IEventBus modEventBus, ModContainer modContainer) {
         NeoForge.EVENT_BUS.register(this);
 
+        // Регистрируем слушатель события входа игрока
+        NeoForge.EVENT_BUS.addListener(this::onPlayerLogin);
+
         // Регистрируем все DeferredRegister
         ModCreativeModTabs.register(modEventBus);
         ModItems.register(modEventBus);
@@ -39,6 +47,7 @@ public class DaoistGu {
         ModEntities.ENTITIES.register(modEventBus);
 
         ModWorms.register(modEventBus);
+        ModAttachments.register(modEventBus);
 
         // Добавляем слушатели событий
         modEventBus.addListener(this::addCreative);
@@ -67,7 +76,6 @@ public class DaoistGu {
             event.accept(ModItems.BASE_COIN);
             event.accept(ModItems.VINE_255);
             event.accept(ModItems.VINE_2);
-
         }
         if(event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS){
             event.accept(ModBlocks.BISMUTH_BLOCK);
@@ -88,11 +96,33 @@ public class DaoistGu {
         LOGGER.info("Server starting!");
     }
 
+    /**
+     * Обработчик входа игрока в мир.
+     * Отправляет клиенту текущие значения генов для отображения HUD.
+     */
+    private void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.getEntity() instanceof ServerPlayer serverPlayer) {
+            syncGenes(serverPlayer);
+        }
+    }
+
+    /**
+     * Синхронизирует гены игрока с клиентом.
+     * Вызывайте этот метод при любом изменении генов.
+     *
+     * @param player игрок, которому нужно отправить обновление
+     */
+    public static void syncGenes(ServerPlayer player) {
+        PlayerGenes genes = player.getData(ModAttachments.PLAYER_GENES);
+        player.connection.send(new SyncGenesPayload(genes));
+        LOGGER.debug("Synced genes for player: {}", player.getName().getString());
+    }
+
     @EventBusSubscriber(modid = DaoistGu.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     static class ClientModEvents {
         @SubscribeEvent
         static void onClientSetup(FMLClientSetupEvent event) {
-            // Клиентская инициализация
+            // Клиентская инициализация (здесь можно добавить что-то позже)
         }
     }
 }
