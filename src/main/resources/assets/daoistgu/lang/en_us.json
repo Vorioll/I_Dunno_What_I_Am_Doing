@@ -10,6 +10,8 @@
 
   "item.daoistgu.vine2": "Mortal Wine",
   "item.daoistgu.vine": "Jade Wine",
+  "item.daoistgu.blood_arrow_gu_rank_1": "Blood Arrow gu",
+  "item.daoistgu.blood_arrow_gu_rank_5": "Blood Arrow gu",
 
   "block.daoistgu.bismuth_block": "Block of bismuth",
   "block.daoistgu.bismuth_ore": "Ore of bismuth",
@@ -22,6 +24,7 @@
   "creativetab.daoistgu.bismuth_items": "Bismuth items",
   "creativetab.daoistgu.bismuth_blocks": "Bismuth blocks",
   "creativetab.daoistgu.dao_ingredients": "Dao ingredients",
+  "creativetab.daoistgu.gu_worms": "Gu worms",
 
   "tooltip.daoistgu.rank": "Rank: %s",
   "tooltip.daoistgu.type": "Type: %s",
@@ -32,6 +35,14 @@
   "tooltip.daoistgu.type.hell": "Hell",
   "tooltip.daoistgu.type.alcohol": "Alcohol",
   "tooltip.daoistgu.type.unknown": "Unknown",
+
+  "path.daoistgu.power": "Power",
+  "path.daoistgu.transformation": "Transformation",
+  "path.daoistgu.fire": "Fire",
+  "path.daoistgu.reinforcement": "Reinforcement",
+  "path.daoistgu.subjugate": "Subjugation",
+  "path.daoistgu.space": "Space",
+  "path.daoistgu.blood": "Blood",
 
   "entity.daoistgu.jade_monkey": "Jade monkey"
 }

@@ -60,7 +60,7 @@ public class ModCreativeModTabs {
 
                     }).build());
     public static final Supplier<CreativeModeTab> GU_WORMS_TAB = CREATIVE_MODE_TAB.register("gu_worms_tab",
-            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.VINE_255.get()))
+            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModWorms.BLOOD_ARROW_GU_RANK_1.get()))
                     .withTabsBefore(ResourceLocation.fromNamespaceAndPath(DaoistGu.MOD_ID, "dao_ingredients_tab"))
                     .title(Component.translatable("creativetab.daoistgu.gu_worms"))
                     .displayItems((itemDisplayParameters, output) -> {

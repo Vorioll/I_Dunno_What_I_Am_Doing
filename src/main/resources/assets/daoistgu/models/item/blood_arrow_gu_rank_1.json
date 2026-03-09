@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "daoistgu:item/bloodarrowguu"
+    "layer0": "daoistgu:item/blood_arrow_gu"
   }
 }

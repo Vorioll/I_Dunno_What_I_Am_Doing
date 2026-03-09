@@ -10,6 +10,8 @@
 
   "item.daoistgu.vine2": "Вино смертных",
   "item.daoistgu.vine": "Нефритовое вино",
+  "item.daoistgu.blood_arrow_gu_rank_1": "Кровавая Стрела гу",
+  "item.daoistgu.blood_arrow_gu_rank_5": "Кровавая Стрела гу",
 
   "block.daoistgu.bismuth_block": "Блок бисмута",
   "block.daoistgu.bismuth_ore": "Руда бисмута",
@@ -22,6 +24,7 @@
   "creativetab.daoistgu.bismuth_items": "Предметы из бисмута",
   "creativetab.daoistgu.bismuth_blocks": "Блоки бисмута",
   "creativetab.daoistgu.dao_ingredients": "Ингредиенты Дао",
+  "creativetab.daoistgu.gu_worms": "Черви Гу",
 
   "tooltip.daoistgu.rank": "Ранг: %s",
   "tooltip.daoistgu.type": "Тип: %s",
@@ -32,6 +35,14 @@
   "tooltip.daoistgu.type.hell": "Адский",
   "tooltip.daoistgu.type.alcohol": "Алкоголь",
   "tooltip.daoistgu.type.unknown": "Неизвестно",
+
+  "path.daoistgu.power": "Сила",
+  "path.daoistgu.transformation": "Трансформация",
+  "path.daoistgu.fire": "Огонь",
+  "path.daoistgu.reinforcement": "Усиление",
+  "path.daoistgu.subjugate": "Порабощение",
+  "path.daoistgu.space": "Пространство",
+  "path.daoistgu.blood": "Кровь",
 
   "entity.daoistgu.jade_monkey": "Нефритовая обезьянка"
 }

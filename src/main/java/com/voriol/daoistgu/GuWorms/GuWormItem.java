@@ -182,15 +182,17 @@ public abstract class GuWormItem extends Item {
                                 @NotNull List<Component> tooltip,
                                 @NotNull TooltipFlag flag) {
 
+        // Ранг - пока оставляем как есть, но тоже можно будет перевести позже
         tooltip.add(Component.literal("§7Ранг: §f" + rank.getLevel()));
-        tooltip.add(Component.literal("§7Путь: §f" + path.name()));
+
+        // ИСПРАВЛЕНО: Путь теперь использует перевод
+        tooltip.add(Component.literal("§7Путь: §f")
+                .append(Component.translatable(path.getTranslationKey())));
 
         int satiety = getSatiety(stack);
-
         tooltip.add(Component.literal("§7Сытость: §f" + satiety + "/" + MAX_SATIETY));
 
         int cd = getCooldown(stack);
-
         if (cd > 0) {
             tooltip.add(Component.literal("§7Перезарядка: §f" + (cd / 20) + " сек."));
         }
@@ -203,7 +205,6 @@ public abstract class GuWormItem extends Item {
         if (satiety < 20) {
             tooltip.add(Component.literal("§cЧервь голоден"));
         }
-
     }
 
 }
