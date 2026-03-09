@@ -20,7 +20,7 @@ public class ModItems {
     public static final DeferredItem<Item> JADE = ITEMS.register("jade",
             () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> PRIMORDIAL_STONE = ITEMS.register("primordial_stone",
-            () -> new Primal_Stone(new Item.Properties()));
+            () -> new Primal_Stone(new Item.Properties(), 1, "heaven"));
     public static final DeferredItem<Item> BASE_COIN = ITEMS.register("base_coin",
             () -> new DaoIngredients(new Item.Properties(), 1, "ore"));
     public static final DeferredItem<Item> JADE_COIN = ITEMS.register("jade_coin",

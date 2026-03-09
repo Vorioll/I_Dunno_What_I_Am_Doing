@@ -8,9 +8,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class Primal_Stone extends Item {
-    public Primal_Stone(Properties properties) {
-        super(properties);
+public class Primal_Stone extends DaoIngredients {
+    public Primal_Stone(Properties properties, int rank, String type) {
+        super(properties, rank, type);
     }
     @Override
     @NotNull
