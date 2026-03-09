@@ -1,5 +1,6 @@
 package com.voriol.daoistgu;
 
+import com.voriol.daoistgu.GuWorms.ModWorms;
 import com.voriol.daoistgu.block.ModBlocks;
 import com.voriol.daoistgu.entity.ModEntities;
 import com.voriol.daoistgu.item.ModCreativeModTabs;
@@ -37,6 +38,8 @@ public class DaoistGu {
         ModBlocks.register(modEventBus);
         ModEntities.ENTITIES.register(modEventBus);
 
+        ModWorms.register(modEventBus);
+
         // Добавляем слушатели событий
         modEventBus.addListener(this::addCreative);
         modEventBus.addListener(this::commonSetup);
@@ -64,6 +67,7 @@ public class DaoistGu {
             event.accept(ModItems.BASE_COIN);
             event.accept(ModItems.VINE_255);
             event.accept(ModItems.VINE_2);
+
         }
         if(event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS){
             event.accept(ModBlocks.BISMUTH_BLOCK);

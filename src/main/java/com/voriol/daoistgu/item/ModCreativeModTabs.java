@@ -1,12 +1,14 @@
 package com.voriol.daoistgu.item;
 
 import com.voriol.daoistgu.DaoistGu;
+import com.voriol.daoistgu.GuWorms.ModWorms;
 import com.voriol.daoistgu.block.ModBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -56,6 +58,14 @@ public class ModCreativeModTabs {
                         output.accept(ModItems.VINE_2);
                         output.accept(ModItems.VINE_255);
 
+                    }).build());
+    public static final Supplier<CreativeModeTab> GU_WORMS_TAB = CREATIVE_MODE_TAB.register("gu_worms_tab",
+            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.VINE_255.get()))
+                    .withTabsBefore(ResourceLocation.fromNamespaceAndPath(DaoistGu.MOD_ID, "dao_ingredients_tab"))
+                    .title(Component.translatable("creativetab.daoistgu.gu_worms"))
+                    .displayItems((itemDisplayParameters, output) -> {
+                        output.accept((ItemLike) ModWorms.BLOOD_ARROW_GU_RANK_1);
+                        output.accept((ItemLike) ModWorms.BLOOD_ARROW_GU_RANK_5);
                     }).build());
 
 
