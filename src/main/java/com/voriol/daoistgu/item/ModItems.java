@@ -3,6 +3,7 @@ package com.voriol.daoistgu.item;
 import com.voriol.daoistgu.DaoistGu;
 import com.voriol.daoistgu.entity.ModEntities;
 import com.voriol.daoistgu.item.custom.ChiselItem;
+import net.minecraft.world.item.EggItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.neoforged.bus.api.IEventBus;
@@ -34,7 +35,7 @@ public class ModItems {
     public static final DeferredItem<Item> VINE_2 = ITEMS.register("vine2",
             () -> new Vine(new Item.Properties(), 2, 2, "alcohol"));
     public static final DeferredItem<Item> JADE_MONKEY_SPAWN_EGG = ITEMS.register("jade_monkey_spawn_egg",
-            () -> new SpawnEggItem(ModEntities.JADE_MONKEY.get(), 0x4CAF50, 0x2E7D32, new Item.Properties()));
+            () -> new SpawnEggItem(ModEntities.JADE_MONKEY.get(), 0xb1b1b1, 0x57b832, new Item.Properties()));
 
 
     public static void register(IEventBus eventBus) {

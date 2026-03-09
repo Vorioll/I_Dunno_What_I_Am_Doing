@@ -6,6 +6,7 @@
   "item.daoistgu.base_coin": "Монета",
   "item.daoistgu.primordial_stone": "Первородный камень",
   "item.daoistgu.chisel": "Долото",
+  "item.daoistgu.jade_monkey_spawn_egg": "Яйцо призыва нефритовой обезьянки",
 
   "item.daoistgu.vine2": "Вино смертных",
   "item.daoistgu.vine": "Нефритовое вино",
@@ -30,5 +31,7 @@
   "tooltip.daoistgu.type.heaven": "Небесный",
   "tooltip.daoistgu.type.hell": "Адский",
   "tooltip.daoistgu.type.alcohol": "Алкоголь",
-  "tooltip.daoistgu.type.unknown": "Неизвестно"
+  "tooltip.daoistgu.type.unknown": "Неизвестно",
+
+  "entity.daoistgu.jade_monkey": "Нефритовая обезьянка"
 }

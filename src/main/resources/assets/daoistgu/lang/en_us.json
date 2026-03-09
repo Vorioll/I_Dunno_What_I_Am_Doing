@@ -6,6 +6,7 @@
   "item.daoistgu.base_coin": "Base coin",
   "item.daoistgu.primordial_stone": "Primordial Stone",
   "item.daoistgu.chisel": "Chisel",
+  "item.daoistgu.jade_monkey_spawn_egg": "Jade monkey spawn egg",
 
   "item.daoistgu.vine2": "Mortal Wine",
   "item.daoistgu.vine": "Jade Wine",
@@ -30,6 +31,7 @@
   "tooltip.daoistgu.type.heaven": "Heaven",
   "tooltip.daoistgu.type.hell": "Hell",
   "tooltip.daoistgu.type.alcohol": "Alcohol",
-  "tooltip.daoistgu.type.unknown": "Unknown"
+  "tooltip.daoistgu.type.unknown": "Unknown",
 
+  "entity.daoistgu.jade_monkey": "Jade monkey"
 }
