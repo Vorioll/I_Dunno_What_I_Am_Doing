@@ -25,12 +25,6 @@ public class BloodArrowGu extends GuWormItem {
     @Override
     protected boolean applyAbility(Level level, Player player, ItemStack stack) {
 
-        float hp = player.getHealth();
-
-        if (hp <= 1f) {
-            return false;
-        }
-
         float cost = 1f*rank.getLevel();
         player.hurt(player.damageSources().magic(), cost);
 
