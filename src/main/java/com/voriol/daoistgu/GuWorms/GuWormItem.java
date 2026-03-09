@@ -27,7 +27,7 @@ public abstract class GuWormItem extends Item {
     private static final String COOLDOWN_TAG = "cooldown";
 
     private static final int MAX_SATIETY = 100;
-    private static final int SATIETY_COST = 10;
+    private static final int SATIETY_COST = 0;
 
     public GuWormItem(Properties properties, GuWormRank rank, GuWormPath path, Supplier<Item> foodItem) {
         super(properties.stacksTo(1));

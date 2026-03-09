@@ -31,7 +31,7 @@ public class BloodArrowGu extends GuWormItem {
             return false;
         }
 
-        float cost = hp * 0.5f;
+        float cost = 0.5f*rank.getLevel();
         player.hurt(player.damageSources().magic(), cost);
 
         double damage = getDamageByRank();
