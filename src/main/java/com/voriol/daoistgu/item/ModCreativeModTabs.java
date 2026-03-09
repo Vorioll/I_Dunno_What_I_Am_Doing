@@ -57,6 +57,11 @@ public class ModCreativeModTabs {
                         output.accept(ModItems.PRIMORDIAL_STONE);
                         output.accept(ModItems.VINE_2);
                         output.accept(ModItems.VINE_255);
+                        output.accept(ModItems.RADISH);
+                        output.accept(ModItems.WINE_RANK_1);
+                        output.accept(ModItems.WINE_RANK_2);
+                        output.accept(ModItems.WINE_RANK_3);
+                        output.accept(ModItems.WINE_RANK_4);
 
                     }).build());
     public static final Supplier<CreativeModeTab> GU_WORMS_TAB = CREATIVE_MODE_TAB.register("gu_worms_tab",

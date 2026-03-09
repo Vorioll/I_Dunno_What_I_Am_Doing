@@ -10,7 +10,7 @@ import net.minecraft.ChatFormatting;
 import java.util.List;
 
 public class DaoIngredients extends Item {
-    private final int rank;
+    protected int rank;
     private final String type;
 
     public DaoIngredients(Properties properties, int rank, String type) {
