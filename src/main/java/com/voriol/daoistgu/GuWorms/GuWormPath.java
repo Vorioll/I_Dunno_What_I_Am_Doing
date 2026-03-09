@@ -7,6 +7,7 @@ public enum GuWormPath {
     REINFORCEMENT,
     SUBJUGATE,
     SPACE,
+    STAR,
     BLOOD;
 
     public int getLevel() {
