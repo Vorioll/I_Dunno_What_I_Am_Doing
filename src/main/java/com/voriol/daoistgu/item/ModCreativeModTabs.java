@@ -73,6 +73,8 @@ public class ModCreativeModTabs {
                         output.accept((ItemLike) ModWorms.BLOOD_ARROW_GU_RANK_5);
                         output.accept((ItemLike) ModWorms.POWER_STEP_GU_RANK_1);
                         output.accept((ItemLike) ModWorms.POWER_STEP_GU_RANK_5);
+                        output.accept((ItemLike) ModWorms.LIGHT_GU_RANK_1);
+                        output.accept((ItemLike) ModWorms.LUNAR_LIGHT_GU_RANK_1);
                     }).build());
 
 
