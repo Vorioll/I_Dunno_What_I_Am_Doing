@@ -18,81 +18,63 @@ public class LightGu extends GuWormItem {
 
     private static final String TAG_ACTIVE = "lightActive";
     private static final String TAG_END_TIME = "lightEndTime";
-    private static final int DURATION_TICKS = 60 * 20; // 60 секунд
-    private static final int COOLDOWN_TICKS = 20 * 10; // 10 секунд (можно использовать для запрета повторной активации)
+
+    private static final int DURATION_TICKS = 60 * 20;
+    private static final int RELOAD_TICKS = 70 * 20;
 
     public LightGu(Properties properties, GuWormRank rank, Supplier<net.minecraft.world.item.Item> foodItem) {
         super(properties, rank, GuWormPath.STAR, foodItem);
     }
 
     @Override
+    protected int getSatietyCost() {
+        return 20; // Активация требует 20 сытости
+    }
+
+    @Override
     protected boolean applyAbility(Level level, Player player, ItemStack stack) {
         if (level.isClientSide) return true;
 
-        // Проверка сытости
-        int satiety = getSatiety(stack);
-        if (satiety < 20) {
-            player.displayClientMessage(Component.literal("Червь голоден!"), true);
-            return false;
-        }
-
-        // Проверка, не активен ли уже свет (через компонент)
+        // Сытость уже проверена в GuWormItem.use() через getSatietyCost()
         if (isLightActive(stack)) {
-            player.displayClientMessage(Component.literal("Свет уже активен!"), true);
+            player.displayClientMessage(Component.literal("Свет уже активен"), true);
             return false;
         }
 
-        // Активируем: записываем флаг и время окончания
-        CompoundTag tag = getCustomData(stack).copyTag(); // получаем текущий или пустой
+        CompoundTag tag = getTag(stack);
         tag.putBoolean(TAG_ACTIVE, true);
-        long endTime = level.getGameTime() + DURATION_TICKS;
-        tag.putLong(TAG_END_TIME, endTime);
-        setCustomData(stack, tag);
+        tag.putLong(TAG_END_TIME, level.getGameTime() + DURATION_TICKS);
+        setTag(stack, tag);
 
-        setSatiety(stack, satiety - 20); // тратим корм
         return true;
     }
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean selected) {
-        if (!(entity instanceof Player)) return;
-        if (level.isClientSide) return; // всё на сервере
+        if (!(entity instanceof Player player)) return;
+        if (level.isClientSide) return;
 
-        if (isLightActive(stack)) {
-            long endTime = getEndTime(stack);
-            if (level.getGameTime() >= endTime) {
-                // Время вышло — деактивируем
-                CompoundTag tag = getCustomData(stack).copyTag();
-                tag.remove(TAG_ACTIVE);
-                tag.remove(TAG_END_TIME);
-                setCustomData(stack, tag);
-            }
+        if (!isLightActive(stack)) return;
+
+        long endTime = getEndTime(stack);
+        if (level.getGameTime() >= endTime) {
+            CompoundTag tag = getTag(stack);
+            tag.remove(TAG_ACTIVE);
+            tag.remove(TAG_END_TIME);
+            setTag(stack, tag);
         }
     }
 
     @Override
     protected int getCooldownTime() {
-        return COOLDOWN_TICKS;
+        return RELOAD_TICKS;
     }
 
-    /**
-     * Метод для клиента: возвращает true, если способность активна.
-     */
     public static boolean isLightActive(ItemStack stack) {
-        CompoundTag tag = getCustomData(stack).copyTag();
-        return tag.contains(TAG_ACTIVE) && tag.getBoolean(TAG_ACTIVE);
+        return getCustomData(stack).getBoolean(TAG_ACTIVE);
     }
 
-    private static long getEndTime(ItemStack stack) {
-        CompoundTag tag = getCustomData(stack).copyTag();
-        return tag.contains(TAG_END_TIME) ? tag.getLong(TAG_END_TIME) : 0;
-    }
-
-    private static CustomData getCustomData(ItemStack stack) {
-        return stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
-    }
-
-    private static void setCustomData(ItemStack stack, CompoundTag tag) {
-        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+    public static long getEndTime(ItemStack stack) {
+        return getCustomData(stack).getLong(TAG_END_TIME);
     }
 }

@@ -15,20 +15,25 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public class LunarLightGu extends GuWormItem {
 
     private static final double DISTANCE = 15.0;
 
-    public LunarLightGu(Properties properties, GuWormRank rank, java.util.function.Supplier<net.minecraft.world.item.Item> foodItem) {
+    public LunarLightGu(Properties properties, GuWormRank rank, Supplier<net.minecraft.world.item.Item> foodItem) {
         super(properties, rank, GuWormPath.STAR, foodItem);
+    }
+
+    @Override
+    protected int getSatietyCost() {
+        return 0; // LunarLightGu не тратит сытость на способность
     }
 
     @Override
     protected boolean applyAbility(Level level, Player player, ItemStack stack) {
         if (level.isClientSide) return true;
 
-        // Получаем количество активных LightGu в инвентаре игрока
         int activeLightCount = getActiveLightCount(player);
         double damage = getBaseDamageByRank() * (1.0 + 0.5 * activeLightCount);
 
@@ -38,7 +43,6 @@ public class LunarLightGu extends GuWormItem {
         if (level instanceof ServerLevel serverLevel) {
             for (int i = 1; i <= DISTANCE; i++) {
                 Vec3 point = start.add(direction.scale(i));
-
                 serverLevel.sendParticles(ParticleTypes.END_ROD,
                         point.x, point.y, point.z,
                         1, 0, 0, 0, 0);
@@ -58,20 +62,15 @@ public class LunarLightGu extends GuWormItem {
         return true;
     }
 
-    /**
-     * Сканирует инвентарь игрока и возвращает количество активных LightGu.
-     */
     private int getActiveLightCount(Player player) {
         int count = 0;
         Inventory inv = player.getInventory();
-        // Проверяем все слоты основного инвентаря (включая хотбар)
         for (int i = 0; i < inv.getContainerSize(); i++) {
             ItemStack itemStack = inv.getItem(i);
             if (itemStack.getItem() instanceof LightGu && LightGu.isLightActive(itemStack)) {
                 count++;
             }
         }
-        // Также проверяем слот второй руки (offhand)
         ItemStack offhand = player.getOffhandItem();
         if (offhand.getItem() instanceof LightGu && LightGu.isLightActive(offhand)) {
             count++;

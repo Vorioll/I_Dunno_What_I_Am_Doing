@@ -26,6 +26,11 @@ public class PowerStepGu extends GuWormItem {
     }
 
     @Override
+    protected int getSatietyCost() {
+        return 0; // способность не тратит сытость
+    }
+
+    @Override
     protected boolean applyAbility(Level level, Player player, ItemStack stack) {
         if (level.isClientSide) return true; // вся логика только на сервере
 

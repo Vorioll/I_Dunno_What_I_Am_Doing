@@ -13,9 +13,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.item.component.CustomData;
-import net.minecraft.nbt.CompoundTag;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -30,7 +27,6 @@ public abstract class GuWormItem extends Item {
     private static final String COOLDOWN_TAG = "cooldown";
 
     private static final int MAX_SATIETY = 100;
-    private static final int SATIETY_COST = 0;
 
     public GuWormItem(Properties properties, GuWormRank rank, GuWormPath path, Supplier<Item> foodItem) {
         super(properties.stacksTo(1));
@@ -39,13 +35,23 @@ public abstract class GuWormItem extends Item {
         this.foodItem = foodItem;
     }
 
-    private CompoundTag getTag(ItemStack stack) {
+    // Публичные статические методы для работы с NBT (используются в статических контекстах)
+    public static CompoundTag getCustomData(ItemStack stack) {
         CustomData data = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
         return data.copyTag();
     }
 
-    private void setTag(ItemStack stack, CompoundTag tag) {
+    public static void setCustomData(ItemStack stack, CompoundTag tag) {
         stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+    }
+
+    // Защищённые нестатические методы теперь делегируют статическим
+    protected CompoundTag getTag(ItemStack stack) {
+        return getCustomData(stack);
+    }
+
+    protected void setTag(ItemStack stack, CompoundTag tag) {
+        setCustomData(stack, tag);
     }
 
     protected int getSatiety(ItemStack stack) {
@@ -72,31 +78,23 @@ public abstract class GuWormItem extends Item {
 
     @Override
     public void inventoryTick(@NotNull ItemStack stack, @NotNull Level level, @NotNull Entity entity, int slotId, boolean isSelected) {
-
         if (!level.isClientSide) {
-
             int cd = getCooldown(stack);
-
             if (cd > 0) {
                 setCooldown(stack, cd - 1);
             }
-
         }
-
     }
 
     @Override
     public void onCraftedBy(@NotNull ItemStack stack, @NotNull Level level, @NotNull Player player) {
-
         setSatiety(stack, MAX_SATIETY);
         setCooldown(stack, 0);
-
     }
 
     @Override
     @NotNull
     public InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
-
         ItemStack stack = player.getItemInHand(hand);
 
         if (level.isClientSide) {
@@ -105,56 +103,40 @@ public abstract class GuWormItem extends Item {
 
         ItemStack offhand = player.getOffhandItem();
 
-        // ===== КОРМЛЕНИЕ =====
+        // Кормление
         if (feed(stack, offhand)) {
-
             if (!player.getAbilities().instabuild) {
                 offhand.shrink(1);
             }
-
-            player.displayClientMessage(
-                    Component.literal("Червь накормлен."),
-                    true
-            );
-
+            player.displayClientMessage(Component.literal("Червь накормлен."), true);
             return InteractionResultHolder.success(stack);
         }
 
-        // ===== ПРОВЕРКА КУЛДАУНА =====
+        // Проверка кулдауна
         int cd = getCooldown(stack);
-
         if (cd > 0) {
-
-            player.displayClientMessage(
-                    Component.literal("Червь восстанавливается. Осталось " + (cd / 20) + " сек."),
-                    true
-            );
-
+            player.displayClientMessage(Component.literal("Червь восстанавливается. Осталось " + (cd / 20) + " сек."), true);
             return InteractionResultHolder.fail(stack);
         }
 
-        // ===== ПРОВЕРКА СЫТОСТИ =====
+        // Проверка сытости (используем индивидуальную стоимость)
         int satiety = getSatiety(stack);
-
-        if (satiety < SATIETY_COST) {
-
+        int cost = getSatietyCost();
+        if (satiety < cost) {
             player.displayClientMessage(
                     Component.literal("Червь голоден! Накормите его ")
                             .append(Component.translatable(foodItem.get().getDescriptionId())),
                     true
             );
-
             return InteractionResultHolder.fail(stack);
         }
 
-        // ===== АКТИВАЦИЯ СПОСОБНОСТИ =====
+        // Активация способности
         boolean success = applyAbility(level, player, stack);
 
         if (success) {
-
-            setSatiety(stack, satiety - SATIETY_COST);
+            setSatiety(stack, satiety - cost);
             setCooldown(stack, getCooldownTime());
-
             return InteractionResultHolder.consume(stack);
         }
 
@@ -162,18 +144,16 @@ public abstract class GuWormItem extends Item {
     }
 
     public boolean feed(ItemStack wormStack, ItemStack foodStack) {
-
         if (foodStack.getItem() == foodItem.get()) {
-
             int current = getSatiety(wormStack);
-
             setSatiety(wormStack, current + 20);
-
             return true;
         }
-
         return false;
     }
+
+    // Абстрактный метод для стоимости активации
+    protected abstract int getSatietyCost();
 
     protected abstract boolean applyAbility(Level level, Player player, ItemStack stack);
 
@@ -184,30 +164,19 @@ public abstract class GuWormItem extends Item {
                                 @NotNull TooltipContext context,
                                 @NotNull List<Component> tooltip,
                                 @NotNull TooltipFlag flag) {
-
-        // Ранг - пока оставляем как есть, но тоже можно будет перевести позже
         tooltip.add(Component.literal("§7Ранг: §f" + rank.getLevel()));
-
-        // ИСПРАВЛЕНО: Путь теперь использует перевод
         tooltip.add(Component.literal("§7Путь: §f")
                 .append(Component.translatable(path.getTranslationKey())));
-
         int satiety = getSatiety(stack);
         tooltip.add(Component.literal("§7Сытость: §f" + satiety + "/" + MAX_SATIETY));
-
         int cd = getCooldown(stack);
         if (cd > 0) {
             tooltip.add(Component.literal("§7Перезарядка: §f" + (cd / 20) + " сек."));
         }
-
-        tooltip.add(
-                Component.literal("§7Корм: §f")
-                        .append(Component.translatable(foodItem.get().getDescriptionId()))
-        );
-
+        tooltip.add(Component.literal("§7Корм: §f")
+                .append(Component.translatable(foodItem.get().getDescriptionId())));
         if (satiety < 20) {
             tooltip.add(Component.literal("§cЧервь голоден"));
         }
     }
-
 }

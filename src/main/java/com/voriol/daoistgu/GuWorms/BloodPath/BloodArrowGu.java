@@ -1,56 +1,67 @@
 package com.voriol.daoistgu.GuWorms.BloodPath;
 
-import com.voriol.daoistgu.GuWorms.GuWormItem;
 import com.voriol.daoistgu.GuWorms.GuWormPath;
 import com.voriol.daoistgu.GuWorms.GuWormRank;
+import com.voriol.daoistgu.entity.custom.BloodProjectileEntity;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Supplier;
 
-public class BloodArrowGu extends GuWormItem {
+public class BloodArrowGu extends BloodPath {
 
     public BloodArrowGu(Properties properties, GuWormRank rank, Supplier<Item> foodItem) {
-        super(properties, rank, GuWormPath.BLOOD, foodItem);
+        super(properties, rank, GuWormPath.BLOOD, foodItem, 2);
+    }
+
+    @Override
+    protected int getSatietyCost() {
+        return 0;
     }
 
     @Override
     protected boolean applyAbility(Level level, Player player, ItemStack stack) {
 
-        float cost = 1f*rank.getLevel();
+        float cost = 1f * rank.getLevel();
         player.hurt(player.damageSources().magic(), cost);
 
-        double damage = getDamageByRank();
+        float damage = (float) getDamageByRank();
 
-        Arrow arrow = new Arrow(EntityType.ARROW, level);
+        float aoeRadius = 2f + rank.getLevel() * 0.2f;
 
-        arrow.setOwner(player);
-        arrow.setBaseDamage(damage);
+        Vec3 look = player.getLookAngle();
+        float speed = getSpeedByRank();
 
-        arrow.setPos(
+        BloodProjectileEntity projectile = new BloodProjectileEntity(
+                level,
+                look.x,
+                look.y,
+                look.z
+        );
+
+        projectile.setPos(
                 player.getX(),
                 player.getEyeY() - 0.1,
                 player.getZ()
         );
 
-        arrow.shootFromRotation(
-                player,
-                player.getXRot(),
-                player.getYRot(),
-                0,
-                getSpeedByRank(),
-                0
+        projectile.setDeltaMovement(
+                look.x * speed,
+                look.y * speed,
+                look.z * speed
         );
 
-        level.addFreshEntity(arrow);
+        projectile.setDamage(damage);
+        projectile.setAoeRadius(aoeRadius);
+
+        level.addFreshEntity(projectile);
 
         spawnBloodParticles(level, player);
 
@@ -59,7 +70,7 @@ public class BloodArrowGu extends GuWormItem {
                 player.getX(),
                 player.getY(),
                 player.getZ(),
-                SoundEvents.ARROW_SHOOT,
+                SoundEvents.GENERIC_DRINK,
                 SoundSource.PLAYERS,
                 1f,
                 0.8f
@@ -68,17 +79,11 @@ public class BloodArrowGu extends GuWormItem {
         return true;
     }
 
-    private double getDamageByRank() {
-        int r = rank.getLevel();
-        return 5 + r * 2;
-    }
-
     private float getSpeedByRank() {
-        return 2.2f + rank.getLevel() * 0.15f;
+        return 0.4f + rank.getLevel() * 0.05f;
     }
 
     private void spawnBloodParticles(Level level, Player player) {
-
         if (!(level instanceof ServerLevel serverLevel)) return;
 
         int count = 6 + rank.getLevel() * 2;
@@ -100,7 +105,4 @@ public class BloodArrowGu extends GuWormItem {
     protected int getCooldownTime() {
         return Math.max(40, 80 - rank.getLevel() * 10);
     }
-
-
-
 }
