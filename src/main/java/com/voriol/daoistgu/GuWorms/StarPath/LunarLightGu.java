@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -27,9 +28,9 @@ public class LunarLightGu extends GuWormItem {
     protected boolean applyAbility(Level level, Player player, ItemStack stack) {
         if (level.isClientSide) return true;
 
-        // Получаем бонус от активного света
-        int lightCount = LightGu.getActiveLightCount(player);
-        double damage = getBaseDamageByRank() * (1.0 + 0.5 * lightCount);
+        // Получаем количество активных LightGu в инвентаре игрока
+        int activeLightCount = getActiveLightCount(player);
+        double damage = getBaseDamageByRank() * (1.0 + 0.5 * activeLightCount);
 
         Vec3 start = player.position().add(0, player.getEyeHeight(), 0);
         Vec3 direction = player.getLookAngle().normalize();
@@ -51,11 +52,31 @@ public class LunarLightGu extends GuWormItem {
             }
         }
 
-        // Звук тихий, как у аметиста
         level.playSound(null, player.getX(), player.getY(), player.getZ(),
                 SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 0.2f, 1.2f);
 
         return true;
+    }
+
+    /**
+     * Сканирует инвентарь игрока и возвращает количество активных LightGu.
+     */
+    private int getActiveLightCount(Player player) {
+        int count = 0;
+        Inventory inv = player.getInventory();
+        // Проверяем все слоты основного инвентаря (включая хотбар)
+        for (int i = 0; i < inv.getContainerSize(); i++) {
+            ItemStack itemStack = inv.getItem(i);
+            if (itemStack.getItem() instanceof LightGu && LightGu.isLightActive(itemStack)) {
+                count++;
+            }
+        }
+        // Также проверяем слот второй руки (offhand)
+        ItemStack offhand = player.getOffhandItem();
+        if (offhand.getItem() instanceof LightGu && LightGu.isLightActive(offhand)) {
+            count++;
+        }
+        return count;
     }
 
     @Override

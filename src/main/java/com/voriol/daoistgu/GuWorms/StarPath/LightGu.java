@@ -3,22 +3,25 @@ package com.voriol.daoistgu.GuWorms.StarPath;
 import com.voriol.daoistgu.GuWorms.GuWormItem;
 import com.voriol.daoistgu.GuWorms.GuWormPath;
 import com.voriol.daoistgu.GuWorms.GuWormRank;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 
-import java.util.*;
+import java.util.function.Supplier;
 
 public class LightGu extends GuWormItem {
 
+    private static final String TAG_ACTIVE = "lightActive";
+    private static final String TAG_END_TIME = "lightEndTime";
     private static final int DURATION_TICKS = 60 * 20; // 60 секунд
-    private static final int COOLDOWN_TICKS = 20 * 10; // 10 секунд после окончания
-    private static final Map<UUID, LightArea> activeAreas = new HashMap<>();
+    private static final int COOLDOWN_TICKS = 20 * 10; // 10 секунд (можно использовать для запрета повторной активации)
 
-    public LightGu(Properties properties, GuWormRank rank, java.util.function.Supplier<net.minecraft.world.item.Item> foodItem) {
+    public LightGu(Properties properties, GuWormRank rank, Supplier<net.minecraft.world.item.Item> foodItem) {
         super(properties, rank, GuWormPath.STAR, foodItem);
     }
 
@@ -26,48 +29,44 @@ public class LightGu extends GuWormItem {
     protected boolean applyAbility(Level level, Player player, ItemStack stack) {
         if (level.isClientSide) return true;
 
-        // Проверка кормления
+        // Проверка сытости
         int satiety = getSatiety(stack);
         if (satiety < 20) {
-            player.displayClientMessage(
-                    net.minecraft.network.chat.Component.literal("Червь голоден!"), true);
+            player.displayClientMessage(Component.literal("Червь голоден!"), true);
             return false;
         }
 
-        UUID id = player.getUUID();
-        LightArea area = activeAreas.get(id);
-
-        // Проверка перезарядки
-        if (area != null && area.ticksLeft > 0) {
-            player.displayClientMessage(
-                    net.minecraft.network.chat.Component.literal("Свет ещё активен!"), true);
+        // Проверка, не активен ли уже свет (через компонент)
+        if (isLightActive(stack)) {
+            player.displayClientMessage(Component.literal("Свет уже активен!"), true);
             return false;
         }
 
-        int radius = 5 + rank.getLevel() * 2;
-        activeAreas.put(id, new LightArea(player, radius, DURATION_TICKS, COOLDOWN_TICKS));
+        // Активируем: записываем флаг и время окончания
+        CompoundTag tag = getCustomData(stack).copyTag(); // получаем текущий или пустой
+        tag.putBoolean(TAG_ACTIVE, true);
+        long endTime = level.getGameTime() + DURATION_TICKS;
+        tag.putLong(TAG_END_TIME, endTime);
+        setCustomData(stack, tag);
 
         setSatiety(stack, satiety - 20); // тратим корм
-
         return true;
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, Level level, net.minecraft.world.entity.Entity entity, int slot, boolean selected) {
-        if (!(entity instanceof Player player)) return;
-        if (!(level instanceof ServerLevel serverLevel)) return;
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean selected) {
+        if (!(entity instanceof Player)) return;
+        if (level.isClientSide) return; // всё на сервере
 
-        LightArea area = activeAreas.get(player.getUUID());
-        if (area == null) return;
-
-        if (area.ticksLeft > 0) {
-            area.ticksLeft--;
-            area.update(serverLevel);
-        } else if (area.cooldownLeft > 0) {
-            area.cooldownLeft--;
-        } else {
-            area.clear(serverLevel);
-            activeAreas.remove(player.getUUID());
+        if (isLightActive(stack)) {
+            long endTime = getEndTime(stack);
+            if (level.getGameTime() >= endTime) {
+                // Время вышло — деактивируем
+                CompoundTag tag = getCustomData(stack).copyTag();
+                tag.remove(TAG_ACTIVE);
+                tag.remove(TAG_END_TIME);
+                setCustomData(stack, tag);
+            }
         }
     }
 
@@ -76,52 +75,24 @@ public class LightGu extends GuWormItem {
         return COOLDOWN_TICKS;
     }
 
-    public static int getActiveLightCount(Player player) {
-        LightArea area = activeAreas.get(player.getUUID());
-        if (area != null && area.ticksLeft > 0) return area.radius / 2;
-        return 0;
+    /**
+     * Метод для клиента: возвращает true, если способность активна.
+     */
+    public static boolean isLightActive(ItemStack stack) {
+        CompoundTag tag = getCustomData(stack).copyTag();
+        return tag.contains(TAG_ACTIVE) && tag.getBoolean(TAG_ACTIVE);
     }
 
-    private static class LightArea {
-        final Player player;
-        final int radius;
-        int ticksLeft;
-        int cooldownLeft;
-        final Set<BlockPos> lastLightBlocks = new HashSet<>();
+    private static long getEndTime(ItemStack stack) {
+        CompoundTag tag = getCustomData(stack).copyTag();
+        return tag.contains(TAG_END_TIME) ? tag.getLong(TAG_END_TIME) : 0;
+    }
 
-        LightArea(Player player, int radius, int duration, int cooldown) {
-            this.player = player;
-            this.radius = radius;
-            this.ticksLeft = duration;
-            this.cooldownLeft = cooldown;
-        }
+    private static CustomData getCustomData(ItemStack stack) {
+        return stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+    }
 
-        void update(ServerLevel level) {
-            clear(level); // удаляем старые блоки
-
-            BlockPos center = player.blockPosition();
-            for (int dx = -radius; dx <= radius; dx++) {
-                for (int dy = -radius; dy <= radius; dy++) {
-                    for (int dz = -radius; dz <= radius; dz++) {
-                        if (dx*dx + dy*dy + dz*dz <= radius*radius) {
-                            BlockPos pos = center.offset(dx, dy, dz);
-                            if (level.getBlockState(pos).isAir()) {
-                                level.setBlock(pos, Blocks.LIGHT.defaultBlockState(), 3);
-                                lastLightBlocks.add(pos);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        void clear(ServerLevel level) {
-            for (BlockPos pos : lastLightBlocks) {
-                if (level.getBlockState(pos).is(Blocks.LIGHT)) {
-                    level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
-                }
-            }
-            lastLightBlocks.clear();
-        }
+    private static void setCustomData(ItemStack stack, CompoundTag tag) {
+        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
     }
 }
