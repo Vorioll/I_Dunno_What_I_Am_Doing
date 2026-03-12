@@ -18,6 +18,9 @@ version = mod_version
 group = mod_group_id
 
 repositories {
+    flatDir {
+        dir 'libs'
+    }
     // Add here additional repositories if required by some of the dependencies below.
 }
 
@@ -112,6 +115,13 @@ configurations {
 }
 
 dependencies {
+    // Добавляем RyoamicLights и ObsidianUI из папки libs
+    implementation 'local:RyoamicLights:0.2.11'
+    implementation 'local:ObsidianUI:0.2.9'
+
+    // Чтобы они загружались при запуске игры из IDEA (runtime)
+    runtimeOnly 'local:RyoamicLights:0.2.11'
+    runtimeOnly 'local:ObsidianUI:0.2.9'
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
