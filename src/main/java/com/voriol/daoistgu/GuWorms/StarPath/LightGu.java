@@ -55,13 +55,13 @@ public class LightGu extends GuWormItem {
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean selected) {
+        super.inventoryTick(stack, level, entity, slot, selected); // ← обязательно!
         if (!(entity instanceof Player)) return;
-        if (level.isClientSide) return; // всё на сервере
+        if (level.isClientSide) return;
 
         if (isLightActive(stack)) {
             long endTime = getEndTime(stack);
             if (level.getGameTime() >= endTime) {
-                // Время вышло — деактивируем
                 CompoundTag tag = getCustomData(stack).copyTag();
                 tag.remove(TAG_ACTIVE);
                 tag.remove(TAG_END_TIME);
@@ -72,9 +72,8 @@ public class LightGu extends GuWormItem {
 
     @Override
     protected int getCooldownTime() {
-        return COOLDOWN_TICKS;
+        return DURATION_TICKS + COOLDOWN_TICKS; // 1200 + 200 = 1400 тиков (70 секунд)
     }
-
     /**
      * Метод для клиента: возвращает true, если способность активна.
      */
