@@ -18,38 +18,34 @@ public class LightGu extends GuWormItem {
 
     private static final String TAG_ACTIVE = "lightActive";
     private static final String TAG_END_TIME = "lightEndTime";
-    private static final int DURATION_TICKS = 60 * 20; // 60 секунд
-    private static final int COOLDOWN_TICKS = 20 * 10; // 10 секунд (можно использовать для запрета повторной активации)
+
+    private static final int DURATION_TICKS = 60 * 20;
+    private static final int COOLDOWN_TICKS = 20 * 10;
 
     public LightGu(Properties properties, GuWormRank rank, Supplier<net.minecraft.world.item.Item> foodItem) {
         super(properties, rank, GuWormPath.STAR, foodItem);
     }
 
     @Override
+    protected int getSatietyCost() {
+        return 20; // Активация требует 20 сытости
+    }
+
+    @Override
     protected boolean applyAbility(Level level, Player player, ItemStack stack) {
         if (level.isClientSide) return true;
 
-        // Проверка сытости
-        int satiety = getSatiety(stack);
-        if (satiety < 20) {
-            player.displayClientMessage(Component.literal("Червь голоден!"), true);
-            return false;
-        }
-
-        // Проверка, не активен ли уже свет (через компонент)
+        // Сытость уже проверена в GuWormItem.use() через getSatietyCost()
         if (isLightActive(stack)) {
-            player.displayClientMessage(Component.literal("Свет уже активен!"), true);
+            player.displayClientMessage(Component.literal("Свет уже активен"), true);
             return false;
         }
 
-        // Активируем: записываем флаг и время окончания
-        CompoundTag tag = getCustomData(stack).copyTag(); // получаем текущий или пустой
+        CompoundTag tag = getTag(stack);
         tag.putBoolean(TAG_ACTIVE, true);
-        long endTime = level.getGameTime() + DURATION_TICKS;
-        tag.putLong(TAG_END_TIME, endTime);
-        setCustomData(stack, tag);
+        tag.putLong(TAG_END_TIME, level.getGameTime() + DURATION_TICKS);
+        setTag(stack, tag);
 
-        setSatiety(stack, satiety - 20); // тратим корм
         return true;
     }
 
@@ -62,6 +58,7 @@ public class LightGu extends GuWormItem {
         if (isLightActive(stack)) {
             long endTime = getEndTime(stack);
             if (level.getGameTime() >= endTime) {
+                // Время вышло — деактивируем
                 CompoundTag tag = getCustomData(stack).copyTag();
                 tag.remove(TAG_ACTIVE);
                 tag.remove(TAG_END_TIME);
@@ -74,6 +71,7 @@ public class LightGu extends GuWormItem {
     protected int getCooldownTime() {
         return DURATION_TICKS + COOLDOWN_TICKS; // 1200 + 200 = 1400 тиков (70 секунд)
     }
+
     /**
      * Метод для клиента: возвращает true, если способность активна.
      */

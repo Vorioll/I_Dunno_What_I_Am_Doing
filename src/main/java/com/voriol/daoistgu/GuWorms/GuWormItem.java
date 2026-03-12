@@ -13,6 +13,9 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.nbt.CompoundTag;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -36,13 +39,22 @@ public abstract class GuWormItem extends Item {
         this.foodItem = foodItem;
     }
 
-    private CompoundTag getTag(ItemStack stack) {
+    // Публичные статические методы для работы с NBT (используются в статических контекстах)
+    public static CompoundTag getCustomData(ItemStack stack) {
         CustomData data = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
         return data.copyTag();
     }
 
-    private void setTag(ItemStack stack, CompoundTag tag) {
+    public static void setCustomData(ItemStack stack, CompoundTag tag) {
         stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+    }
+    // Защищённые нестатические методы теперь делегируют статическим
+    protected CompoundTag getTag(ItemStack stack) {
+        return getCustomData(stack);
+    }
+
+    protected void setTag(ItemStack stack, CompoundTag tag) {
+        setCustomData(stack, tag);
     }
 
     protected int getSatiety(ItemStack stack) {
@@ -171,6 +183,9 @@ public abstract class GuWormItem extends Item {
 
         return false;
     }
+
+    // Абстрактный метод для стоимости активации
+    protected abstract int getSatietyCost();
 
     protected abstract boolean applyAbility(Level level, Player player, ItemStack stack);
 

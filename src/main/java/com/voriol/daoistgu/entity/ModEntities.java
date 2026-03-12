@@ -3,8 +3,10 @@ package com.voriol.daoistgu.entity;
 import com.voriol.daoistgu.DaoistGu;
 import com.voriol.daoistgu.entity.client.model.GolemModel;
 import com.voriol.daoistgu.entity.client.model.JadeMonkeyModel;
+import com.voriol.daoistgu.entity.client.render.BloodProjectileRenderer;
 import com.voriol.daoistgu.entity.client.render.GolemRenderer;
 import com.voriol.daoistgu.entity.client.render.JadeMonkeyRenderer;
+import com.voriol.daoistgu.entity.custom.BloodProjectileEntity;
 import com.voriol.daoistgu.entity.custom.GolemEntity;
 import com.voriol.daoistgu.entity.custom.JadeMonkeyEntity;
 import net.minecraft.core.registries.Registries;
@@ -20,6 +22,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.function.Supplier;
 
 public class ModEntities {
+
     public static final DeferredRegister<EntityType<?>> ENTITIES =
             DeferredRegister.create(Registries.ENTITY_TYPE, DaoistGu.MOD_ID);
 
@@ -37,6 +40,16 @@ public class ModEntities {
                             .build("golem")
             );
 
+    public static final Supplier<EntityType<BloodProjectileEntity>> BLOOD_PROJECTILE =
+            ENTITIES.register("blood_projectile",
+                    () -> EntityType.Builder
+                            .<BloodProjectileEntity>of(BloodProjectileEntity::new, MobCategory.MISC)
+                            .sized(0.4f, 0.4f)
+                            .clientTrackingRange(4)
+                            .updateInterval(10)
+                            .build("blood_projectile")
+            );
+
     public static void registerAttributes(EntityAttributeCreationEvent event) {
         event.put(JADE_MONKEY.get(), JadeMonkeyEntity.createAttributes().build());
         event.put(GOLEM.get(), GolemEntity.createAttributes().build());
@@ -49,6 +62,7 @@ public class ModEntities {
         public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
             event.registerEntityRenderer(JADE_MONKEY.get(), JadeMonkeyRenderer::new);
             event.registerEntityRenderer(GOLEM.get(), GolemRenderer::new);
+            event.registerEntityRenderer(BLOOD_PROJECTILE.get(), BloodProjectileRenderer::new);
         }
 
         @SubscribeEvent
