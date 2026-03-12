@@ -37,7 +37,7 @@ public class ModWorms {
                     () -> new BloodArrowGu(
                             new Item.Properties(),
                             GuWormRank.FIVE,
-                            VINE_255
+                            VINE_2
                     ));
 
     public static final DeferredHolder<Item, Item> POWER_STEP_GU_RANK_1 =
